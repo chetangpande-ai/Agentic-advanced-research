@@ -9,6 +9,13 @@ Run:
 uv run python 4-agents\01_chat_completion_api_metadata.py
 ```
 
+Tool-calling examples:
+
+```powershell
+uv run python 4-agents\02_chat_completion_with_tools_manual.py
+uv run python 4-agents\03_langchain_agent_with_tools.py
+```
+
 ## Chat Completions API Vs Agent
 
 | Topic | Chat Completions API | Agent |
@@ -48,3 +55,46 @@ Agent:
 
 So the Chat Completions API is the engine call. The agent is the larger workflow
 that uses the engine call plus tools, state, policies, and decisions.
+
+## Tool Calling Difference
+
+### Raw Chat Completions API
+
+In `02_chat_completion_with_tools_manual.py`, the model receives a JSON tool
+schema.
+
+The model can say:
+
+```text
+Call get_order_status with order_id=ORD-1001
+```
+
+But your Python code must do the actual work:
+
+```text
+LLM requests tool
+Python code executes get_order_status
+Python code sends tool result back to LLM
+LLM writes final answer
+```
+
+### LangChain Agent
+
+In `03_langchain_agent_with_tools.py`, you pass a normal Python function:
+
+```python
+tools=[get_order_status]
+```
+
+The agent handles the loop:
+
+```text
+LLM requests tool
+LangChain executes get_order_status
+LangChain adds tool result to agent state
+LLM writes final answer
+```
+
+The tool itself is still Python code in both cases. The difference is **who
+orchestrates the loop**: you do it manually with Chat Completions; the agent
+framework does it for you with `create_agent`.
