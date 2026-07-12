@@ -16,6 +16,12 @@ uv run python 4-agents\02_chat_completion_with_tools_manual.py
 uv run python 4-agents\03_langchain_agent_with_tools.py
 ```
 
+Conversational chatbot:
+
+```powershell
+uv run python 4-agents\04_conversational_chatbot.py
+```
+
 ## Chat Completions API Vs Agent
 
 | Topic | Chat Completions API | Agent |
@@ -98,3 +104,26 @@ LLM writes final answer
 The tool itself is still Python code in both cases. The difference is **who
 orchestrates the loop**: you do it manually with Chat Completions; the agent
 framework does it for you with `create_agent`.
+
+## Conversational Chatbot
+
+`04_conversational_chatbot.py` takes dynamic input from the terminal.
+
+It keeps a simple `messages` list:
+
+```text
+system message
+user message 1
+assistant message 1
+user message 2
+assistant message 2
+...
+```
+
+Each time you type a new message, the script sends the full current message
+history to the LLM. That is how the model can answer follow-up questions like
+`What is my name?`
+
+This is still a simple chatbot, not a full production app. In a real app, the
+message history usually lives in Redis, Postgres, Cosmos DB, or another session
+store instead of only a Python list.
