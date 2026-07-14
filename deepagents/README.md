@@ -62,10 +62,58 @@ commands you can run when a Git remote and GitHub authentication are available.
 - `automation-standards/api-tests.md`
 - `automation-standards/web-tests.md`
 - `automation-standards/database-tests.md`
+- `concepts/01_task_planning_and_subagents.py`
+- `concepts/02_virtual_filesystem_permissions.py`
+- `concepts/README.md`
 - `test-script-generator/test_script_generator.py`
 - `test-script-generator/sample-testcases/order-status-api.md`
 - `test-script-generator/sample-testcases/login-web-needs-clarification.md`
 - `test-script-generator/sample-testcases/login-with-credentials-blocked.md`
+
+## Concept Mini Lab
+
+The `concepts` folder teaches two Deep Agents features from the LangChain
+overview before you jump into the larger test script generator.
+
+### 1. Task Planning And Subagents
+
+Deep Agents include a built-in `write_todos` planning tool and a built-in
+`task` tool for launching short-lived subagents. Use this when a request has
+independent pieces of work that should be isolated from the parent context.
+
+Dry-run lesson:
+
+```powershell
+uv run python deepagents\concepts\01_task_planning_and_subagents.py
+```
+
+Real Mesh-backed run:
+
+```powershell
+uv run python deepagents\concepts\01_task_planning_and_subagents.py --real
+```
+
+### 2. Virtual Filesystem And Permissions
+
+Deep Agents include virtual filesystem tools such as `ls`, `read_file`,
+`write_file`, `edit_file`, `glob`, and `grep`. Permission rules let you allow
+or deny reads and writes for specific virtual paths. The real run intentionally
+attempts one denied read under `/secrets` and one denied write under
+`/protected` so the boundary is visible.
+
+Dry-run lesson:
+
+```powershell
+uv run python deepagents\concepts\02_virtual_filesystem_permissions.py
+```
+
+Real Mesh-backed run:
+
+```powershell
+uv run python deepagents\concepts\02_virtual_filesystem_permissions.py --real
+```
+
+See `concepts/README.md` for the full explanation.
 
 ## Run Without LLM First
 
