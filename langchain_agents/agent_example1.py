@@ -4,7 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from langchain.agents import create_agent
 from langchain_openai import ChatOpenAI
-
+from langgraph.checkpoint.memory import InMemorySaver
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -45,19 +45,42 @@ def main() -> None:
             "You are a helpful assistant. "
             "Always call get_weather before answering weather questions."
         ),
+        checkpointer=InMemorySaver(),
     )
+
+
+    # Identifies one conversation
+    config = {
+        "configurable": {
+            "thread_id": "chetan-chat"
+        }
+    }
+    result = agent.invoke(
+        {
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "I am chetan",
+                }
+            ]
+        },
+        config=config,
+    )
+    print(result["messages"][-1].content_blocks)
 
     result = agent.invoke(
         {
             "messages": [
                 {
                     "role": "user",
-                    "content": "What's the weather in San Francisco?",
+                    "content": "who am i?",
                 }
             ]
-        }
+        },
+        config=config,
     )
     print(result["messages"][-1].content_blocks)
+
 
 
 if __name__ == "__main__":
